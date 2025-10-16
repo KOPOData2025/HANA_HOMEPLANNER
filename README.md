@@ -59,8 +59,28 @@
 ### 9. 대출 시뮬레이터
 <img width="1187" height="666" alt="image" src="https://github.com/user-attachments/assets/820b7701-35a9-4867-abf8-26a8cde8faac" />
 
+### 10. ERD
+ERD 링크 : https://www.erdcloud.com/d/RmbLKN4A3xfRJDNdB
 
-### 10. 자기 소개
+### Home-Planner (Oracle)
+<img width="1321" height="737" alt="image" src="https://github.com/user-attachments/assets/9c28966f-8dc5-4bd1-bdbf-8a487349fc03" />
+
+### 홈 플래너 사용자
+<img width="1155" height="527" alt="image" src="https://github.com/user-attachments/assets/2f235a33-3198-4375-b240-06bbcdd8188f" />
+
+### 홈 플래너 금융 서비스
+<img width="1051" height="670" alt="image" src="https://github.com/user-attachments/assets/ab062b4d-c9f1-4a90-b8bd-04d19684133a" />
+
+### 홈 플래너 금융 상품
+<img width="1126" height="523" alt="image" src="https://github.com/user-attachments/assets/fb1976d7-3f3c-4dea-8e71-010c9b146b5b" />
+
+### 가상 마이데이터 서버 (Oracle)
+<img width="1232" height="655" alt="image" src="https://github.com/user-attachments/assets/d54acfa3-1d18-4350-a767-6815cef58aac" />
+
+### 청약 추출 데이터 문서 구조 (JSON - MongoDB)
+<img width="853" height="815" alt="image" src="https://github.com/user-attachments/assets/9b3e6de1-8b71-4fb5-aa54-f6b1571a5075" />
+
+## 개발자 프로필
 
 | 구분       | 내용                                                                                         | 비고                                                                                                      |
 | ---------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -77,6 +97,7 @@
 | 수상      | 2025학년도 폴리텍 벤처창업경진대회 본선진출(동상 확보)                                                                       | 한국폴리텍대학 (2025.10.22)    |
 | 교육      | ZB 백엔드 스쿨 - 23기 | 2024.03 ~ 2024.10          |
 |           | 하나금융티아이 채용연계형 교육  <br/>(한국폴리텍대학교 광명융합기술교육원 - 데이터분석과) | 2025.03 ~ 2025.10          |
+
 
 
 
