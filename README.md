@@ -26,8 +26,8 @@
 
 ### 4. 핵심 기능
 <img width="1183" height="667" alt="image" src="https://github.com/user-attachments/assets/db1d488d-ca6e-4e74-b751-ea1bc8b94ac2" /> <br/>
-<img width="455" height="300" alt="image" src="https://github.com/user-attachments/assets/f135814d-a7d8-49d1-8dbd-30da1dae00d1" />       <img width="455" height="300" alt="image" src="https://github.com/user-attachments/assets/de32ac46-369f-4915-8b17-238ac0121b2d" />
-<img width="455" height="300" alt="image" src="https://github.com/user-attachments/assets/8ab584aa-d6b3-4536-b0f2-b15456f374d3" /> <img width="455" height="300" alt="image" src="https://github.com/user-attachments/assets/6c5728e8-6769-4eb3-a71b-4aa5a957ede0" />
+<img width="503" height="300" alt="image" src="https://github.com/user-attachments/assets/f135814d-a7d8-49d1-8dbd-30da1dae00d1" />       <img width="503" height="300" alt="image" src="https://github.com/user-attachments/assets/de32ac46-369f-4915-8b17-238ac0121b2d" />
+<img width="503" height="300" alt="image" src="https://github.com/user-attachments/assets/8ab584aa-d6b3-4536-b0f2-b15456f374d3" /> <img width="503" height="300" alt="image" src="https://github.com/user-attachments/assets/6c5728e8-6769-4eb3-a71b-4aa5a957ede0" />
 
 
 
@@ -77,3 +77,4 @@
 | 수상      | 2025학년도 폴리텍 벤처창업경진대회 본선진출(동상 확보)                                                                       | 한국폴리텍대학 (2025.10.22)    |
 | 교육      | ZB 백엔드 스쿨 - 23기 | 2024.03 ~ 2024.10          |
 |           | 하나금융티아이 채용연계형 교육  <br/>(한국폴리텍대학교 광명융합기술교육원 - 데이터분석과) | 2025.03 ~ 2025.10          |
+
