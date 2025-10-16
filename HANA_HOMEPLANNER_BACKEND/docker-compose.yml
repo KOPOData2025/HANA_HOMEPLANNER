@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  home-planner:
+    image: ${DOCKER_IMAGE_NAME:-kwon3011/home-planner:latest}
+    container_name: home-planner
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - MONGODB_HOST=${MONGODB_HOST}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - SUBSCRIPTION_API_KEY=${SUBSCRIPTION_API_KEY}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
+      - EXTERNAL_MY_DATA_URL=${EXTERNAL_MY_DATA_URL}
+      - COOLSMS_API_KEY=${COOLSMS_API_KEY}
+      - COOLSMS_API_SECRET=${COOLSMS_API_SECRET}
+      - COOLSMS_SENDER_NUMBER=${COOLSMS_SENDER_NUMBER}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - FRONTEND_DOMAIN=${FRONTEND_DOMAIN}
+      - FRONTEND_PORT=${FRONTEND_PORT}
+    volumes:
+      - ./logs:/app/logs  # 로그 파일을 호스트의 ./logs 디렉토리에 마운트
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - home-planner-network
+    depends_on:
+      - oracle-db
+      - mongodb
+
+  # Oracle Database (개발/테스트용 - Production에서는 외부 DB 사용)
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=${ORACLE_PASSWORD:-MyOraclePwd123}
+      - ORACLE_DATABASE=${ORACLE_DATABASE:-FREEPDB1}
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    restart: unless-stopped
+    networks:
+      - home-planner-network
+    profiles:
+      - dev
+      - test
+
+  # MongoDB (개발/테스트용 - Production에서는 외부 DB 사용)
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD:-pass123}
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE:-home_planner}
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    restart: unless-stopped
+    networks:
+      - home-planner-network
+    profiles:
+      - dev
+      - test
+
+volumes:
+  oracle-data:
+    driver: local
+  mongodb-data:
+    driver: local
+  mongodb-config:
+    driver: local
+
+networks:
+  home-planner-network:
+    driver: bridge

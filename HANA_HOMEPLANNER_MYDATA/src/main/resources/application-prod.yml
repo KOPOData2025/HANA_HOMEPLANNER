@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: my-data
+
+  # Oracle DB 설정 (운영 환경 - 같은 인스턴스의 Docker Oracle)
+  datasource:
+    url: jdbc:oracle:thin:@//172.17.0.1:1521/FREEPDB1
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 20
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      validation-timeout: 5000
+      connection-test-query: SELECT 1 FROM DUAL
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.OracleDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        jdbc:
+          batch_size: 50
+        dialect: org.hibernate.dialect.OracleDialect
+    open-in-view: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.hana_ti.my_data: WARN
+    org.springframework.web: WARN
+    root: WARN

@@ -1,0 +1,134 @@
+spring:
+  application:
+    name: home-planner
+
+  # Production Oracle DB 설정
+  datasource:
+    url: jdbc:oracle:thin:@//${DB_HOSTNAME}:1521/FREEPDB1
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      validation-timeout: 5000
+      connection-test-query: SELECT 1 FROM DUAL
+
+  jpa:
+    hibernate:
+      ddl-auto: none   # 테이블 자동생성 안 함 (이미 SQL 스크립트로 구축)
+    database-platform: org.hibernate.dialect.OracleDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+        jdbc:
+          batch_size: 20
+        dialect: org.hibernate.dialect.OracleDialect
+    open-in-view: false
+
+  # MongoDB 설정 (Production)
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:27017/home_planner?authSource=admin
+      database: home_planner
+
+  # Jackson 날짜 형식 설정
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    time-zone: Asia/Seoul
+
+# Production 로깅 설정
+logging:
+  level:
+    root: INFO
+    com.hana_ti.home_planner: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /app/logs/home-planner.log
+    max-size: 100MB
+    max-history: 30
+
+# 청약홈 API 설정
+subscription:
+  api:
+    key: ${SUBSCRIPTION_API_KEY}
+
+# JWT 설정
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000
+
+# MongoDB 설정 (Production)
+mongodb:
+  uri: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:27017/admin?authSource=admin
+  database: home_planner
+  collections:
+    applyhome_json: applyhome_json
+    applyhome_data: applyhome_data
+
+# AWS S3 설정 (Production)
+aws:
+  s3:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    bucket-name: ${AWS_S3_BUCKET_NAME}
+
+# 외부 마이데이터 서버 설정 (Production)
+external:
+  my-data:
+    server:
+      url: ${EXTERNAL_MY_DATA_URL}
+      timeout: 5000
+
+# CoolSMS 설정 (Production)
+coolsms:
+  key: ${COOLSMS_API_KEY}
+  secret: ${COOLSMS_API_SECRET}
+  from-number: ${COOLSMS_SENDER_NUMBER}
+
+# 프론트엔드 URL 설정 (Production)
+app:
+  base-url: ${FRONTEND_URL:http://localhost:3000}
+  frontend-domain: ${FRONTEND_DOMAIN:localhost}
+  frontend-port: ${FRONTEND_PORT:3000}
+
+# 서버 설정
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 10
+    max-connections: 8192
+    accept-count: 100
+
+# Actuator 설정 (Health Check용)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    db:
+      enabled: true
+    diskspace:
+      enabled: true

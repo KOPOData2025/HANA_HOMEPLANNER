@@ -1,0 +1,78 @@
+# Git 관련 파일
+.git
+.gitignore
+.gitattributes
+
+# IDE 관련 파일
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# Build 관련 파일
+target/
+out/
+*.class
+# build/ 디렉토리는 Docker 빌드에 필요하므로 제외하지 않음
+# *.jar 파일도 Docker 빌드에 필요하므로 제외하지 않음
+*.war
+*.ear
+
+# Gradle 관련 파일
+.gradle/
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+
+# Log 파일
+*.log
+logs/
+
+# 임시 파일
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# 테스트 관련 파일
+test-results/
+coverage/
+
+# 문서 파일
+*.md
+docs/
+
+# 환경 설정 파일 (보안상 제외)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Docker 관련 파일
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# CI/CD 관련 파일
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+
+# 스케줄러 결과 파일
+*_payment_result_*.txt
+*_error_*.txt
+
+# HTTP 테스트 파일
+http/
+
+# 기타 불필요한 파일
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

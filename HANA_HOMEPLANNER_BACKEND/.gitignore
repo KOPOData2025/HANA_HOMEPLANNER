@@ -1,0 +1,60 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### 프로젝트 설정 ###
+*.http
+http
+
+### 환경 변수 파일 ###
+.env
+.env.*
+!.env.example
+
+### 로그 파일 ###
+logs/
+*.log
+
+### 스케줄러 결과 파일 ###
+*_payment_result_*.txt
+*_error_*.txt
+
+### Docker 관련 ###
+.docker/
+
+### yml 파일 ###
+/src/main/resources/application.yml

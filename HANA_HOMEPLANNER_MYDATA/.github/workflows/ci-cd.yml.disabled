@@ -1,0 +1,89 @@
+name: Build and Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_IMAGE_NAME }}:latest
+            ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deploy to GCP
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_KEY }}
+          script: |
+            echo "🚀 Deploying to GCP VM..."
+            # .env.production 파일 생성
+            cd /home/${{ secrets.GCP_USERNAME }}
+            cat > .env.production << 'EOF'
+            SPRING_PROFILES_ACTIVE=prod
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DOCKER_IMAGE_NAME=${{ secrets.DOCKER_IMAGE_NAME }}
+            EOF
+            
+            # docker-compose.yml 파일 생성/업데이트
+            cat > docker-compose.yml << 'EOF'
+            version: '3.8'
+            
+            services:
+              homeplanner-mydata:
+                image: ${DOCKER_IMAGE_NAME:-kwon3011/homeplanner-mydata:latest}
+                container_name: homeplanner-mydata
+                ports:
+                  - "8080:8080"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+                  - DB_USERNAME=${DB_USERNAME}
+                  - DB_PASSWORD=${DB_PASSWORD}
+                  - DB_URL=jdbc:oracle:thin:@//host.docker.internal:1521/FREEPDB1
+                restart: unless-stopped
+                healthcheck:
+                  test: ["CMD-SHELL", "curl -f http://localhost:8080/api/health/ping || exit 1"]
+                  interval: 30s
+                  timeout: 10s
+                  retries: 3
+                  start_period: 40s
+            EOF
+            
+            # Docker Compose로 서비스 재시작
+            sudo docker-compose --env-file .env.production down || true
+            sudo docker-compose --env-file .env.production pull
+            sudo docker-compose --env-file .env.production up -d
+            
+            # 이전 이미지 정리
+            sudo docker image prune -f

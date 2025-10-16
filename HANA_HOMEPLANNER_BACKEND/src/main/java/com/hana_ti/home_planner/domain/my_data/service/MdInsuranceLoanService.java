@@ -1,0 +1,126 @@
+package com.hana_ti.home_planner.domain.my_data.service;
+
+import com.hana_ti.home_planner.domain.my_data.dto.MdInsuranceLoanResponseDto;
+import com.hana_ti.home_planner.domain.my_data.dto.external.ExternalInsuranceLoanResponseDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
+public class MdInsuranceLoanService {
+
+    private final ExternalMyDataService externalMyDataService;
+
+    /**
+     * 사용자 ID로 보험 대출 조회 (외부 서버 사용)
+     */
+    public List<MdInsuranceLoanResponseDto> getInsuranceLoansByUserId(Long userId) {
+        log.info("사용자 ID로 보험 대출 조회 시작 - 사용자 ID: {}", userId);
+
+        try {
+            // 외부 서버에서 보험 대출 정보 조회
+            List<ExternalInsuranceLoanResponseDto> externalLoans = 
+                externalMyDataService.getInsuranceLoansByUserId(userId);
+
+            // 외부 데이터를 내부 DTO로 변환
+            List<MdInsuranceLoanResponseDto> dtos = externalLoans.stream()
+                .map(this::convertToMdInsuranceLoanResponseDto)
+                .collect(Collectors.toList());
+
+            log.info("사용자 ID로 보험 대출 조회 완료 - 조회된 대출 수: {}개", dtos.size());
+
+            return dtos;
+
+        } catch (Exception e) {
+            log.error("사용자 ID로 보험 대출 조회 중 오류 발생 - userId: {}", userId, e);
+            throw new RuntimeException("보험 대출 조회 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    /**
+     * resNum으로 보험 대출 조회 (외부 서버 사용)
+     */
+    public List<MdInsuranceLoanResponseDto> getInsuranceLoansByResNum(String resNum) {
+        log.info("resNum으로 보험 대출 조회 요청: resNum={}", resNum);
+        
+        try {
+            // 1. 외부 서버에서 사용자 정보 조회
+            var externalUser = externalMyDataService.getUserByResNum(resNum);
+            Long userId = externalUser.getUserId();
+            
+            // 2. 외부 서버에서 보험 대출 정보 조회
+            List<ExternalInsuranceLoanResponseDto> externalLoans = 
+                externalMyDataService.getInsuranceLoansByUserId(userId);
+            
+            // 3. 외부 데이터를 내부 DTO로 변환
+            List<MdInsuranceLoanResponseDto> dtos = externalLoans.stream()
+                .map(this::convertToMdInsuranceLoanResponseDto)
+                .collect(Collectors.toList());
+            
+            log.info("resNum으로 보험 대출 조회 완료: resNum={}, userId={}, 대출 수: {}", 
+                    resNum, userId, dtos.size());
+            
+            return dtos;
+            
+        } catch (Exception e) {
+            log.error("resNum으로 보험 대출 조회 중 오류 발생 - resNum: {}", resNum, e);
+            throw new RuntimeException("보험 대출 조회 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 외부 서버 데이터를 내부 DTO로 변환
+     */
+    public MdInsuranceLoanResponseDto convertToMdInsuranceLoanResponseDto(ExternalInsuranceLoanResponseDto external) {
+        return MdInsuranceLoanResponseDto.builder()
+                .insLoanId(external.getLoanId()) // ExternalInsuranceLoanResponseDto의 loanId를 insLoanId로 매핑
+                .userId(external.getUserId())
+                .orgCode(external.getOrgCode())
+                .contractId(null) // 외부 서버에서 제공하지 않는 필드
+                .loanType(external.getLoanType())
+                .principalAmt(null) // 외부 서버에서 제공하지 않는 필드
+                .balanceAmt(external.getBalanceAmt())
+                .intRate(external.getIntRate())
+                .maturityDate(null) // 외부 서버에서 제공하지 않는 필드
+                .nextPayDate(null) // 외부 서버에서 제공하지 않는 필드
+                .repayMethod(null) // 외부 서버에서 제공하지 않는 필드
+                .createdAt(formatDateTime(parseLocalDateTime(external.getCreatedAt())))
+                .build();
+    }
+
+    /**
+     * String을 LocalDateTime으로 변환
+     */
+    private LocalDateTime parseLocalDateTime(String dateTimeStr) {
+        if (dateTimeStr == null || dateTimeStr.isEmpty()) {
+            return null;
+        }
+        try {
+            // ISO 형식 또는 "yyyy-MM-dd HH:mm:ss" 형식 처리
+            if (dateTimeStr.contains("T")) {
+                return LocalDateTime.parse(dateTimeStr.replace("Z", ""));
+            } else {
+                return LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            }
+        } catch (Exception e) {
+            log.warn("날짜시간 파싱 실패: {}", dateTimeStr, e);
+            return null;
+        }
+    }
+
+    /**
+     * LocalDateTime을 문자열로 포맷하는 유틸리티 메서드
+     */
+    private String formatDateTime(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null;
+    }
+}

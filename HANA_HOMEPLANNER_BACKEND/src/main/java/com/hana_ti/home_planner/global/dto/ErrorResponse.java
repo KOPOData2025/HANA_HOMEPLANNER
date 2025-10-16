@@ -1,0 +1,16 @@
+package com.hana_ti.home_planner.global.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ErrorResponse {
+
+    private String code;
+    private String message;
+}

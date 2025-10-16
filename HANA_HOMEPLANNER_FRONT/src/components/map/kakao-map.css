@@ -1,0 +1,556 @@
+.kakao-custom-overlay {
+  position: relative;
+  cursor: pointer;
+  z-index: 1000; /* 폴리곤보다 위에 표시되도록 높은 z-index 설정 */
+}
+
+.overlay-content {
+  background: white;
+  border: 2px solid #0d9488;
+  border-radius: 8px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-size: 11px;
+  font-weight: 600;
+  color: #0d9488;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  min-width: 70px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.overlay-content:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 클릭 가능한 마커를 위한 추가 스타일 */
+.clickable-marker {
+  z-index: 1001 !important; /* 다른 마커들보다도 위에 표시 */
+  position: relative;
+}
+
+.clickable-marker .overlay-content {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  z-index: 1002;
+}
+
+.clickable-marker:hover .overlay-content {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  border-width: 3px;
+}
+
+.clickable-marker:active .overlay-content {
+  transform: scale(1.05);
+}
+
+.overlay-content.apartment {
+  border-color: #0d9488;
+  color: #0d9488;
+}
+
+.overlay-content.officetel {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.overlay-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.overlay-district {
+  font-size: 10px;
+  font-weight: 500;
+  color: #6b7280;
+  line-height: 1;
+}
+
+.overlay-price {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.detail-marker-icon {
+  font-size: 12px;
+}
+
+.overlay-type {
+  font-size: 9px;
+  font-weight: 500;
+  opacity: 0.8;
+  line-height: 1;
+}
+
+.overlay-arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #0d9488;
+}
+
+.overlay-arrow.apartment {
+  border-top-color: #0d9488;
+}
+
+.overlay-arrow.officetel {
+  border-top-color: #3b82f6;
+}
+
+.kakao-info-window {
+  padding: 16px;
+  width: 250px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.info-header {
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.info-title {
+  margin: 0 0 6px 0;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.info-price {
+  color: #0d9488;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.info-details {
+  margin-bottom: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.info-label {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.info-button {
+  width: 100%;
+  background: #0d9488;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.info-button:hover {
+  background: #0f766e;
+}
+
+.kakaomap .MapTypeControl {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.kakaomap .ZoomControl {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.area-label {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-8px);
+  position: relative;
+}
+
+/* 시군구 클릭 안내 라벨 */
+.area-label.clickable-district::before {
+  content: '클릭하여 청약 정보 보기';
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.area-label::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #ffffff;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.avg-price-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid #0d9488;
+  border-radius: 8px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 90px; /* 최소 너비 설정 */
+}
+
+.avg-price-overlay:hover {
+  transform: scale(1.05);
+  border-color: #0f766e;
+}
+
+.avg-price-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  gap: 4px;
+}
+
+.avg-price-icon {
+  font-size: 12px;
+}
+
+.gu-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.avg-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0d9488;
+}
+
+/* 시도별 가격 마커 스타일 */
+.price-marker {
+  position: relative;
+  z-index: 1000;
+}
+
+.price-marker-content {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  min-width: 80px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.price-marker-content:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.price-marker-content:active {
+  transform: scale(0.98);
+}
+
+.price-marker-region {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.price-marker-price {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+} 
+
+/* 시군구별 평균분양가 마커 스타일 */
+.area-price-marker {
+  position: relative;
+  z-index: 800;
+}
+
+.area-price-marker-content {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  min-width: 60px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.area-price-marker-content:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.area-price-marker-content:active {
+  transform: scale(0.98);
+}
+
+.area-price-marker-sigungu {
+  font-size: 9px;
+  font-weight: 600;
+  opacity: 0.95;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.area-price-marker-price {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.area-price-marker-info {
+  font-size: 8px;
+  font-weight: 500;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+/* 클릭 가능한 마커 공통 스타일 */
+.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable:hover {
+  transform: scale(1.05);
+}
+
+/* 이미지 기반 개별 주택 마커 스타일 */
+.individual-house-marker {
+  position: relative;
+  z-index: 1200;
+  cursor: pointer;
+}
+
+.house-marker-container {
+  position: relative;
+  display: inline-block;
+}
+
+.house-marker-image {
+  width: 80px; /* 🔧 아이콘 크기 조절 부분 - 여기서 마커 크기를 변경하세요 */
+  height: 120px;
+  object-fit: contain;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+}
+
+.house-marker-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none; /* 클릭 이벤트가 이미지로 전달되도록 */
+  z-index: 1201;
+  width: 85px; /* 🔧 텍스트 영역 크기 - 아이콘 크기에 맞춰 조정 */
+}
+
+.house-marker-name {
+  font-size: 10px; /* 🔧 주택이름 텍스트 크기 조절 부분 */
+  font-weight: 600;
+  color: #9ca3af; /* 🎨 회색으로 변경 (기존: #ffffff) */
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin-bottom: 2px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 가독성을 위한 그림자 강화 */
+}
+
+.house-marker-price {
+  font-size: 11px; /* 🔧 가격 텍스트 크기 조절 부분 */
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 가독성을 위한 그림자 강화 */
+}
+
+/* 호버 효과 */
+.individual-house-marker:hover .house-marker-image {
+  transform: scale(1.1);
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+}
+
+.individual-house-marker:hover .house-marker-overlay {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* 실시간 청약 마커 스타일 */
+.real-time-marker {
+  position: relative;
+  z-index: 1500;
+  cursor: pointer;
+}
+
+.real-time-marker-container {
+  position: relative;
+  display: inline-block;
+}
+
+.real-time-marker-image {
+  width: 90px;
+  height: 130px;
+  object-fit: contain;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+  animation: pulse 2s infinite, glow 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) brightness(1);
+  }
+  50% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) brightness(1.2);
+  }
+  100% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) brightness(1);
+  }
+}
+
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 5px rgba(255, 165, 0, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 15px rgba(255, 165, 0, 0.6));
+  }
+  100% {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 5px rgba(255, 165, 0, 0.3));
+  }
+}
+
+.real-time-marker-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 1501;
+  width: 95px;
+}
+
+.real-time-marker-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin-bottom: 2px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.real-time-marker-price {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 2px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.real-time-marker-status {
+  font-size: 9px;
+  font-weight: 600;
+  color: #fbbf24;
+  line-height: 1.1;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 1px 4px;
+  display: inline-block;
+  animation: statusBlink 1.5s infinite;
+}
+
+@keyframes statusBlink {
+  0%, 50% {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fbbf24;
+  }
+  25%, 75% {
+    background: rgba(255, 165, 0, 0.3);
+    color: #ffffff;
+  }
+}
+
+/* 실시간 마커 호버 효과 */
+.real-time-marker:hover .real-time-marker-image {
+  transform: scale(1.1);
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3)) brightness(1.1);
+  animation: none;
+}
+
+.real-time-marker:hover .real-time-marker-overlay {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.real-time-marker:hover .real-time-marker-status {
+  background: rgba(255, 255, 255, 0.3);
+  color: #f59e0b;
+}

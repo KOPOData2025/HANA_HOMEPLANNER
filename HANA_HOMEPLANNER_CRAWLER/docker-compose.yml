@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Producer 서비스
+  producer:
+    image: kwon3011/cheongyak-producer:latest
+    container_name: cheongyak-producer
+    restart: unless-stopped
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Consumer 서비스
+  consumer:
+    image: kwon3011/cheongyak-consumer:latest
+    container_name: cheongyak-consumer
+    restart: unless-stopped
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

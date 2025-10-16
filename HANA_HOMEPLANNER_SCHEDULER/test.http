@@ -1,0 +1,23 @@
+### MyData 은행 계좌 조회 API 테스트 (외부 서버 연동)
+
+@baseUrl = http://localhost:8082
+
+### 대출 자동이체 테스트 (날짜 지정)
+POST http://localhost:8082/api/loans/payments/test
+Content-Type: application/json
+
+{
+  "targetDate": "2025-11-29"
+}
+
+### 적금 납입 테스트 (날짜 지정)
+POST http://localhost:8082/api/savings/process-payments
+Content-Type: application/json
+
+{
+  "processDate": "2025-10-03"
+}
+
+### 공동 적금 납입 테스트 (날짜 지정)
+POST http://localhost:8082/api/savings/joint-savings/payment/process?processDate=2025-10-30
+Content-Type: application/json
