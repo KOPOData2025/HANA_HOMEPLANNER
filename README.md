@@ -3,7 +3,7 @@
 # 🏠 **Hana Home Planner**
 ## 내 집 마련을 위한 청약 + 금융 통합 서비스
 
-<img width="1187" height="667" alt="Hana Home Planner Preview" src="https://github.com/user-attachments/assets/a1160a95-8b55-418b-a115-ed3c749175af" />
+<img width="1187" height="667" alt="1" src="https://github.com/user-attachments/assets/09323c6a-98b2-4fdd-b8ef-bab641a42f79" />
 
 ---
 
@@ -136,6 +136,7 @@ ERD 링크 : https://www.erdcloud.com/d/RmbLKN4A3xfRJDNdB
 | 수상      | 2025학년도 폴리텍 벤처창업경진대회 본선진출(동상 확보)                                                                       | 한국폴리텍대학 (2025.10.22)    |
 | 교육      | ZB 백엔드 스쿨 - 23기 | 2024.03 ~ 2024.10          |
 |           | 하나금융티아이 채용연계형 교육  <br/>(한국폴리텍대학교 광명융합기술교육원 - 데이터분석과) | 2025.03 ~ 2025.10          |
+
 
 
 
